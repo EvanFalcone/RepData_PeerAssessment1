@@ -8,7 +8,6 @@ output:
 ## Loading and preprocessing the data
 
 ``` {r loaddata}
-setwd("/Users/estevanfalcone/CODING PRACTICE PROJECTS/R Projects/")
 library("dplyr")
 library("lubridate")
 library("ggplot2")
