@@ -7,7 +7,7 @@ output:
 
 ## Loading and preprocessing the data
 
-``` {r loaddata}
+``` {r loaddata, echo = TRUE}
 library("dplyr")
 library("lubridate")
 library("ggplot2")
@@ -21,21 +21,21 @@ df$date <- lubridate::ymd(df$date)
 
 ### aggregate:
 
-``` {r meansteps}
+``` {r meansteps, echo = TRUE}
 dfGroup <- df %>% group_by(date)
 stepsPerDay <- summarise(dfGroup, sum(steps, na.rm = T))
 ```
 
 ### 1. plot histogram:
 
-``` {r histo1}
+``` {r histo1, echo = TRUE}
 qplot(stepsPerDay$`sum(steps, na.rm = T)`, binwidth = 1000,
       xlab = "Total Number of Steps taken per Day")
 ```
 
 ### 2. mean & medium:
 
-``` {r meanmed1}
+``` {r meanmed1, echo = TRUE}
 mean(stepsPerDay$`sum(steps, na.rm = T)`, na.rm = T)
 median(stepsPerDay$`sum(steps, na.rm = T)`, na.rm = T)
 ```
@@ -43,7 +43,7 @@ median(stepsPerDay$`sum(steps, na.rm = T)`, na.rm = T)
 ## What is the average daily activity pattern?
 
 
-``` {r dailyactiv}
+``` {r dailyactiv, echo = TRUE}
 # aggregate:
 dfGroupAvg <- df %>% group_by(interval)
 avgSteps <- summarise(dfGroupAvg, mean(steps, na.rm = T))
@@ -51,7 +51,7 @@ avgSteps <- summarise(dfGroupAvg, mean(steps, na.rm = T))
 
 ### 1. plot time series:
 
-``` {r timeSeries1}
+``` {r timeSeries1, echo = TRUE}
 ggplot(data=avgSteps, aes(x=interval, y=avgSteps$`mean(steps, na.rm = T)`)) +
   geom_line() +
   xlab("5-minute Interval") +
@@ -60,20 +60,20 @@ ggplot(data=avgSteps, aes(x=interval, y=avgSteps$`mean(steps, na.rm = T)`)) +
 
 ### 2. max number of steps:
 
-``` {r maxNumSteps}
+``` {r maxNumSteps, echo = TRUE}
 avgSteps[which.max(avgSteps$`mean(steps, na.rm = T)`),]
 ```
 
 ## Inputing missing values
 
-``` {r inputMissing}
+``` {r inputMissing, echo = TRUE}
 # 1. Assuming we're looking for NAs in all columns of 'df':
 nrow(subset(df, is.na(df$steps)|is.na(df$date)|is.na(df$interval)))
 ```
 
 ### 2. & 3. Create new dataset with NAs filled by mean of corresponding 5-min interval:
 
-``` {r fillDF}
+``` {r fillDF, echo = TRUE}
 dfFilled <- df %>%
   group_by(interval) %>% 
   mutate(steps = ifelse(is.na(steps), mean(steps, na.rm = T), steps))
@@ -81,19 +81,19 @@ dfFilled <- df %>%
 
 ### Aggregate again:
 
-``` {r Agg2}
+``` {r Agg2, echo = TRUE}
 dfGroupNa <- dfFilled %>% group_by(date)
 stepsPerDayNa <- summarise(dfGroupNa, sum(steps, na.rm = T))
 ```
 
 ### 4. plot histogram + mean & medium updated:
 
-``` {r histo2}
+``` {r histo2, echo = TRUE}
 qplot(stepsPerDayNa$`sum(steps, na.rm = T)`, binwidth = 1000,
       xlab = "Total Number of Steps taken per Day")
 ```
 
-``` {r meanMedian2}
+``` {r meanMedian2, echo = TRUE}
 mean(stepsPerDayNa$`sum(steps, na.rm = T)`, na.rm = T)
 median(stepsPerDayNa$`sum(steps, na.rm = T)`, na.rm = T)
 ```
@@ -109,7 +109,7 @@ of steps taken each day.
 
 ### 1. Add weekdays and weeknights column to dfFilled:
 
-``` {r weekdaysEnds}
+``` {r weekdaysEnds, echo = TRUE}
 wDayVsWEnd <- function(date) {
   day <- weekdays(date)
   if (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
@@ -127,14 +127,14 @@ dfFilled[,"day"] <- sapply(dfFilled$date, FUN = wDayVsWEnd)
 
 ### Aggregate for a last time:
 
-``` {r agg3}
+``` {r agg3, echo = TRUE}
 dfGroupAvgFill <- dfFilled %>% group_by(interval, day)
 avgStepsFill <- summarise(dfGroupAvgFill, mean(steps))
 ```
 
 ### Plot time series weekday vs weekend:
 
-``` {r timeSeries3}
+``` {r timeSeries3, echo = TRUE}
 ggplot(data=avgStepsFill, aes(interval, `mean(steps)`))  +
   geom_line() +
   facet_grid(day ~ .) +
