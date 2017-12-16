@@ -15,7 +15,8 @@ library("ggplot2")
 
 ### Create the data frame as 'df':
 df <- read.csv("activity.csv")
-df$date <- lubridate::ymd(df$date)```
+df$date <- lubridate::ymd(df$date)
+```
 
 ## What is mean total number of steps taken per day?
 
@@ -30,7 +31,8 @@ qplot(stepsPerDay$`sum(steps, na.rm = T)`, binwidth = 1000,
 
 # 2. mean & medium:
 mean(stepsPerDay$`sum(steps, na.rm = T)`, na.rm = T)
-median(stepsPerDay$`sum(steps, na.rm = T)`, na.rm = T)```
+median(stepsPerDay$`sum(steps, na.rm = T)`, na.rm = T)
+```
 
 ## What is the average daily activity pattern?
 
@@ -70,7 +72,8 @@ qplot(stepsPerDayNa$`sum(steps, na.rm = T)`, binwidth = 1000,
       xlab = "Total Number of Steps taken per Day")
 
 mean(stepsPerDayNa$`sum(steps, na.rm = T)`, na.rm = T)
-median(stepsPerDayNa$`sum(steps, na.rm = T)`, na.rm = T)```
+median(stepsPerDayNa$`sum(steps, na.rm = T)`, na.rm = T)
+```
 
 Mean and median values are higher after filling the missing data. The reason is,
 in the original data, there are some days with `steps` values `NA` for 
@@ -107,4 +110,5 @@ ggplot(data=avgStepsFill, aes(interval, `mean(steps)`))  +
   geom_line() +
   facet_grid(day ~ .) +
   xlab("5-minute Interval") +
-  ylab("Average Number of Steps taken Filled")```
+  ylab("Average Number of Steps taken Filled")
+  ```
