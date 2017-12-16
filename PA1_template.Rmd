@@ -8,7 +8,9 @@ output:
 ## Loading and preprocessing the data
 
 ``` {r loaddata}
-setwd("/Users/estevanfalcone/CODING PRACTICE PROJECTS/R Projects/")
+unzip(zipfile="activity.zip")
+df <- read.csv("activity.csv")
+
 library("dplyr")
 library("lubridate")
 library("ggplot2")
